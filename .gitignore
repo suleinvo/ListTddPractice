@@ -1,2 +1,5 @@
-/ListTddPractice.UI/bin
-/ListTddPractice.UI/obj
+*.suo
+*.user
+_ReSharper.*
+bin
+obj

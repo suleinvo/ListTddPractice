@@ -18,7 +18,7 @@ namespace ListTddPractice.UI
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var presenter = new MainPresenter(new MainView());
+            var presenter = new MainPresenter(new MainView(), null);
             presenter.Run();
         }
     }

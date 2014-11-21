@@ -14,9 +14,10 @@ namespace ListTddPractice.UI.Presenters
         private IView _view;
         private IListService _listService;
 
-        public MainPresenter(IMainView view)
+        public MainPresenter(IMainView view, IListService service)
         {
             _view = view;
+            _listService = service;
         }
 
         public void Run()
