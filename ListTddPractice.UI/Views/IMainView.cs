@@ -8,6 +8,5 @@ namespace ListTddPractice.UI.Views
 {
     public interface IMainView : IView
     {
-        
     }
 }

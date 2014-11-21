@@ -5,21 +5,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ListTddPractice.UI.Preseners;
+using ListTddPractice.BL;
 
 namespace ListTddPractice.UI.Presenters
 {
     public class MainPresenter : IPresenter
     {
-        protected IView View { get; private set; }
+        private IView _view;
+        private IListService _listService;
 
-        public MainPresenter(IView view)
+        public MainPresenter(IMainView view)
         {
-            View = view;
+            _view = view;
         }
 
         public void Run()
         {
-            View.Show();
+            _view.Show();
         }
     }
 }

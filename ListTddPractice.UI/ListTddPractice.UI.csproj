@@ -82,6 +82,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ListTddPractice.BL\ListTddPractice.BL.csproj">
+      <Project>{378528ac-1652-4203-8520-f900389bd466}</Project>
+      <Name>ListTddPractice.BL</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
