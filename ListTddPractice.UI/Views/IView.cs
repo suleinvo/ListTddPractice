@@ -9,5 +9,6 @@ namespace ListTddPractice.UI.Views
     {
         void Show();
         void Close();
+        void ShowError(string message);
     }
 }

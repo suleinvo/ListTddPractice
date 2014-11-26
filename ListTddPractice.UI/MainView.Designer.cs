@@ -38,11 +38,11 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.sortedDescRadioButton = new System.Windows.Forms.RadioButton();
+            this.sortedAscRadioButton = new System.Windows.Forms.RadioButton();
             this.filterComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.sortedAscRadioButton = new System.Windows.Forms.RadioButton();
-            this.sortedDescRadioButton = new System.Windows.Forms.RadioButton();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,6 +53,8 @@
             this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -135,7 +137,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(195, 76);
             this.panel1.TabIndex = 7;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint_1);
             // 
             // groupBox1
             // 
@@ -159,9 +160,45 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Options";
             // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.sortedDescRadioButton);
+            this.panel2.Controls.Add(this.sortedAscRadioButton);
+            this.panel2.Location = new System.Drawing.Point(6, 46);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(189, 87);
+            this.panel2.TabIndex = 12;
+            // 
+            // sortedDescRadioButton
+            // 
+            this.sortedDescRadioButton.AutoSize = true;
+            this.sortedDescRadioButton.Location = new System.Drawing.Point(12, 44);
+            this.sortedDescRadioButton.Name = "sortedDescRadioButton";
+            this.sortedDescRadioButton.Size = new System.Drawing.Size(82, 17);
+            this.sortedDescRadioButton.TabIndex = 1;
+            this.sortedDescRadioButton.TabStop = true;
+            this.sortedDescRadioButton.Text = "Descending";
+            this.sortedDescRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // sortedAscRadioButton
+            // 
+            this.sortedAscRadioButton.AutoSize = true;
+            this.sortedAscRadioButton.Location = new System.Drawing.Point(12, 21);
+            this.sortedAscRadioButton.Name = "sortedAscRadioButton";
+            this.sortedAscRadioButton.Size = new System.Drawing.Size(75, 17);
+            this.sortedAscRadioButton.TabIndex = 0;
+            this.sortedAscRadioButton.TabStop = true;
+            this.sortedAscRadioButton.Text = "Ascending";
+            this.sortedAscRadioButton.UseVisualStyleBackColor = true;
+            // 
             // filterComboBox
             // 
             this.filterComboBox.FormattingEnabled = true;
+            this.filterComboBox.Items.AddRange(new object[] {
+            "All",
+            "None",
+            "A-Z",
+            "0-10000"});
             this.filterComboBox.Location = new System.Drawing.Point(56, 19);
             this.filterComboBox.Name = "filterComboBox";
             this.filterComboBox.Size = new System.Drawing.Size(129, 21);
@@ -175,37 +212,6 @@
             this.label1.Size = new System.Drawing.Size(29, 13);
             this.label1.TabIndex = 11;
             this.label1.Text = "Filter";
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.sortedDescRadioButton);
-            this.panel2.Controls.Add(this.sortedAscRadioButton);
-            this.panel2.Location = new System.Drawing.Point(6, 46);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(189, 87);
-            this.panel2.TabIndex = 12;
-            // 
-            // sortedAscRadioButton
-            // 
-            this.sortedAscRadioButton.AutoSize = true;
-            this.sortedAscRadioButton.Location = new System.Drawing.Point(12, 21);
-            this.sortedAscRadioButton.Name = "sortedAscRadioButton";
-            this.sortedAscRadioButton.Size = new System.Drawing.Size(75, 17);
-            this.sortedAscRadioButton.TabIndex = 0;
-            this.sortedAscRadioButton.TabStop = true;
-            this.sortedAscRadioButton.Text = "Ascending";
-            this.sortedAscRadioButton.UseVisualStyleBackColor = true;
-            // 
-            // sortedDescRadioButton
-            // 
-            this.sortedDescRadioButton.AutoSize = true;
-            this.sortedDescRadioButton.Location = new System.Drawing.Point(12, 44);
-            this.sortedDescRadioButton.Name = "sortedDescRadioButton";
-            this.sortedDescRadioButton.Size = new System.Drawing.Size(82, 17);
-            this.sortedDescRadioButton.TabIndex = 1;
-            this.sortedDescRadioButton.TabStop = true;
-            this.sortedDescRadioButton.Text = "Descending";
-            this.sortedDescRadioButton.UseVisualStyleBackColor = true;
             // 
             // menuStrip1
             // 
@@ -234,6 +240,7 @@
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
@@ -282,6 +289,10 @@
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -297,7 +308,6 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainView";
             this.Text = "List";
-            this.Load += new System.EventHandler(this.MainForm_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -339,6 +349,8 @@
         private System.Windows.Forms.ToolStripMenuItem pasteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
 
