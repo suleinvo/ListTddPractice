@@ -1,30 +1,27 @@
-﻿using ListTddPractice.UI.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ListTddPractice.UI.Preseners;
+﻿using System;
+using System.IO;
 using ListTddPractice.UI.Models;
 using ListTddPractice.UI.Other;
+using ListTddPractice.UI.Views;
 
-namespace ListTddPractice.UI.Presenters
+namespace ListTddPractice.UI.Preseners
 {
     public class MainPresenter : IPresenter
     {
-        private IMainView _view;
-        private IElemRepository _elemRepository;
-        private IFileService _fileService;
+        private readonly IMainView _view;
+        private readonly IElemRepository _elemRepository;
+        private readonly IFileService _fileService;
 
-        public MainPresenter(IMainView view, IElemRepository reposiory, IFileService _fileService)
+        public MainPresenter(IMainView view, IElemRepository reposiory, IFileService fileService)
         {
             _view = view;
             _elemRepository = reposiory;
-            _view.AddWithButtonClick += (arg) => AddToRepository(_view.CurrentElement, arg);
-            _view.DeleteButtonClick += (arg) => DeleteFromRepository(arg);
+            _fileService = fileService;
+            _view.AddWithButtonClick += arg => AddToRepository(_view.CurrentElement, arg);
+            _view.DeleteButtonClick += DeleteFromRepository;
             _view.UseFilter += (sort, filter) => UseFilter(filter, sort);
-            _view.OpenFile += (name) => OpenFile(name);
-            _view.SaveFile += (name) => SaveFile(name);
+            _view.OpenFile += OpenFile;
+            _view.SaveFile += SaveFile;
         }
 
         public void Run()
@@ -60,17 +57,17 @@ namespace ListTddPractice.UI.Presenters
 
         public void UseFilter(string filter, string sort)
         {
-            _view.CurrentList = _elemRepository.Get(filter: filter);
+            _view.CurrentList =  _elemRepository.Get(filter, sort);
         }
 
-        public void OpenFile(string filename)
+        public void OpenFile(Stream stream)
         {
-            _view.CurrentList = _fileService.ReadFile(filename); 
+            _view.CurrentList = _fileService.ReadFile(stream); 
         }
 
-        public void SaveFile(string filename)
+        public void SaveFile(Stream stream)
         {
-            _fileService.WriteFile(_view.CurrentList, filename);
+            _fileService.WriteFile(_view.CurrentList, stream);
         }
 
         private void IsNullOrEmpty(string elem)

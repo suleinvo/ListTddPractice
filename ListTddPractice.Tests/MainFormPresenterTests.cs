@@ -1,14 +1,11 @@
-﻿using NUnit.Framework;
+﻿using System.Collections;
+using System.IO;
+using ListTddPractice.UI.Preseners;
+using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ListTddPractice.UI.Presenters;
 using ListTddPractice.UI.Views;
 using ListTddPractice.UI.Models;
 using NSubstitute;
-using System.Collections;
 using ListTddPractice.UI.Constants;
 using ListTddPractice.UI.Other;
 
@@ -53,18 +50,18 @@ namespace ListTddPractice.Tests
         [Test]
         public void Raise_DeleteElemButton_Succesfull()
         {
-            string expectedValue = "exp";
+            const string expectedValue = "exp";
             _view.DeleteButtonClick += Raise.Event<Action<string>>(expectedValue);
             _elemRepository.Received().Delete(expectedValue);       
         }
 
         [TestCase(null)]
         [TestCase("")]
-        [ExpectedException(typeof(Exception))]
         public void Raise_DeleteElemButtonNotSelected_ThrowError(string notSelected)
         {
             _view.DeleteButtonClick += Raise.Event<Action<string>>(notSelected);
-            _elemRepository.Received().Delete(notSelected);  
+
+            _view.Received().ShowError(Arg.Is<string>(t => t.Contains("Element not selected")));  
         }
 
         [TestCase(Sorting.Asc, Filter.All)]
@@ -72,23 +69,23 @@ namespace ListTddPractice.Tests
         public void Options_FilterAndAscendingGet_Succesfull(string sort, string filter)
         {
             _view.UseFilter += Raise.Event<Action<string, string>>(sort,filter);
-            _elemRepository.Received().Get(sort, filter);
+            _elemRepository.Received().Get(filter, sort);
         }
 
         [Test]
         public void OpenFileAndRead()
         {
-            string fileName = "somename.txt";
-            _view.OpenFile += Raise.Event<Action<string>>(fileName);
-            _fileService.Received().ReadFile(fileName);
+            var stream = Substitute.For<Stream>();
+            _view.OpenFile += Raise.Event<Action<Stream>>(stream);
+            _fileService.Received().ReadFile(Arg.Any<Stream>());
         }
 
         [Test]
         public void SaveFile()
         {
-            string filename = "someone.txt";
-           // _view.SaveFile += 
-
+            var stream = Substitute.For<Stream>();
+            _view.SaveFile += Raise.Event<Action<Stream>>(stream);
+            _fileService.Received().WriteFile(Arg.Any<IList>(), Arg.Any<Stream>());
         }
     }
 }
