@@ -40,10 +40,9 @@ namespace ListTddPractice.Tests
         [TestCase(Mode.Numeric)]//rewrite with false
         public void Raise_WriteAndAddElemWithButtonWithMods_Succesfull(Mode mode)
         {
-            //write element
-            _view.CurrentElement.Returns("Somevalue");
-            //press button
-            _view.AddWithButtonClick += Raise.Event<Action<Mode>>(mode);
+            var someElement = "aabbc";
+            _mainPresenter.ChangeMode(mode);
+            _view.AddWithButtonClick += Raise.Event<Action<string>>(someElement);
             _elemRepository.Received().Add(Arg.Any<string>());
         }
 

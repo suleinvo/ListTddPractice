@@ -60,5 +60,10 @@ namespace ListTddPractice.UI.Models
             if (sort == Sorting.Desc) return result.OrderByDescending(t => t).ToArray();
             return result.ToArray();
         }
+
+        public void Clear()
+        {
+            _memoryDb.Clear();
+        }
     }
 }

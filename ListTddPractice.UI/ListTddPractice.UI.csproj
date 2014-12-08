@@ -58,6 +58,7 @@
     <Compile Include="Other\FileService.cs" />
     <Compile Include="Other\IFileService.cs" />
     <Compile Include="Other\Mode.cs" />
+    <Compile Include="Other\RepositoryHelper.cs" />
     <Compile Include="Preseners\MainPresener.cs" />
     <Compile Include="Preseners\IPresenter.cs" />
     <Compile Include="Views\IMainView.cs" />

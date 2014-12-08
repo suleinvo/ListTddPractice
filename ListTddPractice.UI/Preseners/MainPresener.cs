@@ -11,17 +11,20 @@ namespace ListTddPractice.UI.Preseners
         private readonly IMainView _view;
         private readonly IElemRepository _elemRepository;
         private readonly IFileService _fileService;
+        private Mode _mode;
 
         public MainPresenter(IMainView view, IElemRepository reposiory, IFileService fileService)
         {
-            _view = view;
             _elemRepository = reposiory;
             _fileService = fileService;
-            _view.AddWithButtonClick += arg => AddToRepository(_view.CurrentElement, arg);
+            _view = view;
+            _view.AddWithButtonClick += (elem) => AddToRepository(elem);
             _view.DeleteButtonClick += DeleteFromRepository;
             _view.UseFilter += (sort, filter) => UseFilter(filter, sort);
             _view.OpenFile += OpenFile;
             _view.SaveFile += SaveFile;
+            _view.Clear += Clear;
+            _view.ModeChanged += (mode) => ChangeMode(mode);
         }
 
         public void Run()
@@ -29,12 +32,13 @@ namespace ListTddPractice.UI.Preseners
             _view.Show();
         }
 
-        public void AddToRepository(string elem, Mode mode)
+        public void AddToRepository(string elem)
         {
             try
             {
                 IsNullOrEmpty(elem);
-                _elemRepository.Add(elem);
+                _elemRepository.Add(RepositoryHelper.Validate(elem, _mode));
+                _view.CurrentList = _elemRepository.Get();
             }
             catch (Exception ex)
             {
@@ -48,6 +52,7 @@ namespace ListTddPractice.UI.Preseners
             {
                 IsNullOrEmpty(elem);
                 _elemRepository.Delete(elem);
+                _view.CurrentList = _elemRepository.Get();
             }
             catch (Exception ex)
             {
@@ -68,6 +73,23 @@ namespace ListTddPractice.UI.Preseners
         public void SaveFile(Stream stream)
         {
             _fileService.WriteFile(_view.CurrentList, stream);
+        }
+
+        public void ChangeMode(Mode mode)
+        {
+            if (_mode != mode)
+            {
+                _mode = mode;
+                _view.CurrentList.Clear();
+                _elemRepository.Clear();
+                //_fileService.WriteFile()
+            }
+        }
+
+        public void Clear()
+        {
+            _view.CurrentList.Clear();
+            _elemRepository.Clear();
         }
 
         private void IsNullOrEmpty(string elem)
