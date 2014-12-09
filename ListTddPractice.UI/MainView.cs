@@ -18,6 +18,7 @@ namespace ListTddPractice.UI
         public event Action<string, string> UseFilter;
         public event Action<Mode> ModeChanged;
         public event Action Clear;
+        public event Action<string> SortChanged;
 
         public string CurrentElement { get; set; }
 
@@ -46,10 +47,10 @@ namespace ListTddPractice.UI
             addNewButton.Click += (sender, e) => AddWithButtonClick(enterElemBox.Text);
             deleteButton.Click += (sender, e) => DeleteButtonClick(mainListBox.SelectedItem.ToString());
             clearButton.Click += (sender, e) => Clear();
-            filterComboBox.SelectedValueChanged += (sender, e) => UseFilter(filterComboBox.SelectedItem.ToString(), null);
-            
-            sortedAscRadioButton.Click += (sender, e) => UseFilter(filterComboBox.SelectedText, Sorting.Asc);
-            sortedDescRadioButton.Click += (sender, e) => UseFilter(filterComboBox.SelectedText, Sorting.Desc);
+            filterComboBox.SelectedValueChanged += (sender, e) => UseFilter(null, filterComboBox.SelectedItem.ToString());
+
+            sortedAscRadioButton.Click += (sender, e) => UseFilter(Sorting.Asc, filterComboBox.SelectedText);
+            sortedDescRadioButton.Click += (sender, e) => UseFilter(Sorting.Desc, filterComboBox.SelectedText);
 
             //Save Changes
             openFileDialog1.FileOk += (sender, e) => OpenFile(openFileDialog1.OpenFile());

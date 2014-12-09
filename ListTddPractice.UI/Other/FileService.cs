@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ListTddPractice.UI.Other
 {
-    public class FileService: IFileService, IDisposable
+    public class FileService: IFileService
     {
         public IList ReadFile(Stream stream)
         {
@@ -25,11 +25,6 @@ namespace ListTddPractice.UI.Other
                     file.WriteLine(elem);
                 }
             }
-        }
-
-        public void Dispose()
-        {
-            
         }
     }
 }

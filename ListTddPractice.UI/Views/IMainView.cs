@@ -17,5 +17,6 @@ namespace ListTddPractice.UI.Views
         event Action<Stream> SaveFile;
         event Action<Mode> ModeChanged;
         event Action Clear;
+        event Action<string> SortChanged;
     }
 }

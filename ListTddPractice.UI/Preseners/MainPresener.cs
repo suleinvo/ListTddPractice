@@ -12,6 +12,8 @@ namespace ListTddPractice.UI.Preseners
         private readonly IElemRepository _elemRepository;
         private readonly IFileService _fileService;
         private Mode _mode;
+        private string _sort = null;
+        private string _filter = null;
 
         public MainPresenter(IMainView view, IElemRepository reposiory, IFileService fileService)
         {
@@ -62,7 +64,15 @@ namespace ListTddPractice.UI.Preseners
 
         public void UseFilter(string filter, string sort)
         {
-            _view.CurrentList =  _elemRepository.Get(filter, sort);
+            _filter = filter;
+            _sort = sort;
+            _view.CurrentList =  _elemRepository.Get(_filter, _sort);
+        }
+
+        public void UseSort(string sort)
+        {
+            _sort = sort;
+            _view.CurrentList = _elemRepository.Get(_filter, _sort);
         }
 
         public void OpenFile(Stream stream)

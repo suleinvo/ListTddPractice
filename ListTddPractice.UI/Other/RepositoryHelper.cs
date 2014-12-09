@@ -13,10 +13,10 @@ namespace ListTddPractice.UI.Other
         {
             if (mode == Mode.Numeric)
             {
-                if (Regex.IsMatch(str, @"/^\d+$/") )
+                int val = 0;
+                if (int.TryParse(str, out val))
                 {
-                    int c = int.Parse(str);
-                    if (c >= 0 && c <= 10000)
+                    if (val >= 0 && val <= 10000)
                     {
                         return str;
                     }
@@ -25,7 +25,8 @@ namespace ListTddPractice.UI.Other
 
             if (mode == Mode.Alpha)
             {
-                if (Regex.IsMatch(str, @"^[A-Za-z]+") && (str.Length < 10))
+                var onlyLetter = new string(str.Where(Char.IsLetter).ToArray());
+                if (str == onlyLetter)
                 {
                     return str;
                 }
@@ -33,7 +34,8 @@ namespace ListTddPractice.UI.Other
 
             if (mode == Mode.Mixed)
             {
-                if (str.Length > 10)
+                var onlyLetterOrDigit = new string(str.Where(Char.IsLetterOrDigit).ToArray());
+                if (str == onlyLetterOrDigit)
                 {
                     return str;
                 }
