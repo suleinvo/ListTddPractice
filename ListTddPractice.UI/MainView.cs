@@ -15,12 +15,12 @@ namespace ListTddPractice.UI
         public event Action<string> DeleteButtonClick;
         public event Action<Stream> OpenFile;
         public event Action<Stream> SaveFile;
-        public event Action<string, string> UseFilter;
+        public event Action<string> SortChanged;
         public event Action<Mode> ModeChanged;
         public event Action Clear;
-        public event Action<string> SortChanged;
 
         public string CurrentElement { get; set; }
+        private Mode _mode = Mode.Alpha;
 
         public IList CurrentList
         {
@@ -35,29 +35,45 @@ namespace ListTddPractice.UI
             }
         }
 
+        public Mode Mode
+        {
+            get { return _mode; }
+            set
+            {
+                if (value == Mode.Alpha)
+                {
+                    alphaRadioButton.Checked = true;
+                    _mode = Mode.Alpha;
+                }
+                else
+                {
+                    numericRadioButton.Checked = true;
+                    _mode = Mode.Numeric;
+                }
+            }
+        }
+
         public MainView()
         {
             InitializeComponent();
             //Init Filter Files
-            openFileDialog1.Filter = "list files (*.lst)|*.lst";
-            saveFileDialog1.Filter = "list files (*.lst)|*.lst";
+            openFileDialog1.Filter = @"(*.lst)|*.lst";
+            saveFileDialog1.Filter = @"(*.lst)|*.lst";
             alphaRadioButton.Checked = true;
 
             //Button Action Changes
             addNewButton.Click += (sender, e) => AddWithButtonClick(enterElemBox.Text);
             deleteButton.Click += (sender, e) => DeleteButtonClick(mainListBox.SelectedItem.ToString());
             clearButton.Click += (sender, e) => Clear();
-            filterComboBox.SelectedValueChanged += (sender, e) => UseFilter(null, filterComboBox.SelectedItem.ToString());
 
-            sortedAscRadioButton.Click += (sender, e) => UseFilter(Sorting.Asc, filterComboBox.SelectedText);
-            sortedDescRadioButton.Click += (sender, e) => UseFilter(Sorting.Desc, filterComboBox.SelectedText);
+            sortedAscRadioButton.Click += (sender, e) => SortChanged(Sorting.Asc);
+            sortedDescRadioButton.Click += (sender, e) => SortChanged(Sorting.Desc);
 
             //Save Changes
             openFileDialog1.FileOk += (sender, e) => OpenFile(openFileDialog1.OpenFile());
             saveFileDialog1.FileOk += (sender, e) => SaveFile(saveFileDialog1.OpenFile());
 
             //Radio Button Changed
-            mixedRadioButton.CheckedChanged += (sender, e) => ModeChanged(CheckedChangedHelper(sender));
             alphaRadioButton.CheckedChanged += (sender, e) => ModeChanged(CheckedChangedHelper(sender));
             numericRadioButton.CheckedChanged += (sender, e) => ModeChanged(CheckedChangedHelper(sender));
         }
@@ -65,23 +81,15 @@ namespace ListTddPractice.UI
         public Mode CheckedChangedHelper(object sender)
         {
             var radioButton = sender as RadioButton;
-            if (radioButton.Checked)
+            if (CurrentList.Count != 0)
             {
-                if (CurrentList.Count > 0)
-                    saveFileDialog1.ShowDialog();
+                saveFileDialog1.ShowDialog();
             }
             if (radioButton.Text == "Alpha")
             {
                 return Mode.Alpha;
             }
-            else if (radioButton.Text == "Numeric")
-            {
-                return Mode.Numeric;
-            }
-            else
-            {
-                return Mode.Mixed;
-            }
+            return Mode.Numeric;
         }
 
         public new void Show()
@@ -125,9 +133,11 @@ namespace ListTddPractice.UI
 
         private void MainView_Load(object sender, EventArgs e)
         {
-            this.Width = Screen.PrimaryScreen.Bounds.Width / 2;
-            this.Height = Screen.PrimaryScreen.Bounds.Height / 2;
-            CenterToScreen();
+        }
+
+        private void sortedAscRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

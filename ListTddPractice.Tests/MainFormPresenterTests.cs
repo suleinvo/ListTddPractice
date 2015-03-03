@@ -36,12 +36,9 @@ namespace ListTddPractice.Tests
         }
         
         [TestCase(Mode.Alpha)]
-        [TestCase(Mode.Mixed)]
-        [TestCase(Mode.Numeric)]//rewrite with false
         public void Raise_WriteAndAddElemWithButtonWithMods_Succesfull(Mode mode)
         {
-            var someElement = "aabbc";
-            _mainPresenter.ChangeMode(mode);
+            const string someElement = "aabbc";
             _view.AddWithButtonClick += Raise.Event<Action<string>>(someElement);
             _elemRepository.Received().Add(Arg.Any<string>());
         }
@@ -63,20 +60,22 @@ namespace ListTddPractice.Tests
             _view.Received().ShowError(Arg.Is<string>(t => t.Contains("Element not selected")));  
         }
 
-        [TestCase(Sorting.Asc, Filter.All)]
-        [TestCase(Sorting.Desc,Filter.A_z)]
-        public void Options_FilterAndAscendingGet_Succesfull(string sort, string filter)
+        [TestCase(Sorting.Asc)]
+        [TestCase(Sorting.Desc)]
+        public void Options_FilterAndAscendingGet_Succesfull(string sort)
         {
-            _view.UseFilter += Raise.Event<Action<string, string>>(sort,filter);
-            _elemRepository.Received().Get(filter, sort);
+            _view.SortChanged += Raise.Event<Action<string>>(sort);
+            _elemRepository.Received().Get(sort);
         }
 
         [Test]
         public void OpenFileAndRead()
         {
+            Mode mode;
             var stream = Substitute.For<Stream>();
             _view.OpenFile += Raise.Event<Action<Stream>>(stream);
-            _fileService.Received().ReadFile(Arg.Any<Stream>());
+
+            _fileService.Received().ReadFile(Arg.Any<Stream>(), out mode);
         }
 
         [Test]

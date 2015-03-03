@@ -58,7 +58,7 @@ namespace ListTddPractice.Tests
         public void Delete_WithNotExistsElem_DoNothing()
         {
             _repository.Delete("Not exists");
-            CollectionAssert.AreEquivalent(_resource, _repository.Get(Filter.All));
+            CollectionAssert.AreEquivalent(_resource, _repository.Get());
         }
 
         [Test]
@@ -92,18 +92,18 @@ namespace ListTddPractice.Tests
         [Test]
         public void Get_WithAllFilter_Succesfull()
         {
-            CollectionAssert.AreEquivalent(_resource, _repository.Get(Filter.All));
+            CollectionAssert.AreEquivalent(_resource, _repository.Get());
         }
 
         [Test]
         public void Get_WithA_Z_Filter_Succesfull()
         {
-            CollectionAssert.AreEquivalent(new[] {"abracadabra", "elem", "ninja"}, _repository.Get(Filter.A_z));
+            CollectionAssert.AreEquivalent(new[] {"abracadabra", "elem", "ninja"}, _repository.Get());
         }
         [Test]
         public void Get_With0_10000Filter_Succesfull()
         {
-            CollectionAssert.AreEquivalent(new[] {"123"}, _repository.Get(Filter.z0_10000));
+            CollectionAssert.AreEquivalent(new[] {"123"}, _repository.Get());
         }
 
     }

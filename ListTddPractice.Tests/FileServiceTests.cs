@@ -30,11 +30,12 @@ namespace ListTddPractice.Tests
         [Test]
         public void ReadFile_WithMemoryMock_Succesfully()
         {
+            Mode mode;
             _service = new FileService();
             string[] testValues = { "abc", "rams", "111" };
             string file = testValues.Join(Environment.NewLine);
             _stream = new MemoryStream(Encoding.ASCII.GetBytes(file)); //mockFileStream 
-            var result = _service.ReadFile(_stream);
+            var result = _service.ReadFile(_stream, out mode);
             CollectionAssert.AreEqual(testValues, result);
         }
 }

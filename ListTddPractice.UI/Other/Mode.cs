@@ -9,7 +9,6 @@ namespace ListTddPractice.UI.Other
     public enum Mode
     {
         Alpha,
-        Mixed,
         Numeric
     }
 }

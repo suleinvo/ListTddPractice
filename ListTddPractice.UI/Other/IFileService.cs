@@ -5,7 +5,7 @@ namespace ListTddPractice.UI.Other
 {
     public interface IFileService
     {
-        IList ReadFile(Stream stream);
+        IList ReadFile(Stream stream, out Mode mode);
         void WriteFile(IList list, Stream stream);
     }
 }

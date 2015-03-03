@@ -32,15 +32,6 @@ namespace ListTddPractice.UI.Other
                 }
             }
 
-            if (mode == Mode.Mixed)
-            {
-                var onlyLetterOrDigit = new string(str.Where(Char.IsLetterOrDigit).ToArray());
-                if (str == onlyLetterOrDigit)
-                {
-                    return str;
-                }
-            }
-
             throw new Exception("Wrong value or wrong mode");
         }
     }
