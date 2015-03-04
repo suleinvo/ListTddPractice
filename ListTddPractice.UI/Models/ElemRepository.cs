@@ -34,14 +34,9 @@ namespace ListTddPractice.UI.Models
             _memoryDb.Remove(elem);
         }
 
-        public string[] Get(string filter=null, string sort=null)
+        public string[] Get()
         {
-            var result = new List<string>();
-            if (String.IsNullOrEmpty(filter) && String.IsNullOrEmpty(sort)) return _memoryDb.Cast<string>().ToArray();
-            
-            if (sort == Sorting.Asc) return result.OrderBy(t => t).ToArray();
-            if (sort == Sorting.Desc) return result.OrderByDescending(t => t).ToArray();
-            return result.ToArray();
+            return _memoryDb.Cast<string>().ToArray();
         }
 
         public void Clear()

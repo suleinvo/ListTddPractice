@@ -11,25 +11,17 @@ namespace ListTddPractice.UI.Other
     {
         public static string Validate(string str, Mode mode)
         {
-            if (mode == Mode.Numeric)
+            Regex rgxA = new Regex(@"^[a-zA-Z]+$");
+            Regex rgxN = new Regex(@"^\d+$");
+
+            if (mode == Mode.Numeric && long.Parse(str) <= int.MaxValue)
             {
-                int val = 0;
-                if (int.TryParse(str, out val))
-                {
-                    if (val >= 0 && val <= 10000)
-                    {
-                        return str;
-                    }
-                }
+                if (rgxN.IsMatch(str)) return str;
             }
 
             if (mode == Mode.Alpha)
             {
-                var onlyLetter = new string(str.Where(Char.IsLetter).ToArray());
-                if (str == onlyLetter)
-                {
-                    return str;
-                }
+                if (rgxA.IsMatch(str) && str.Length < 256) return str;
             }
 
             throw new Exception("Wrong value or wrong mode");

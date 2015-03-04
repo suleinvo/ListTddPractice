@@ -2,10 +2,12 @@
 using ListTddPractice.UI.Views;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using ListTddPractice.UI.Constants;
 using ListTddPractice.UI.Other;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 
 namespace ListTddPractice.UI
 {
@@ -20,6 +22,7 @@ namespace ListTddPractice.UI
         public event Action Clear;
 
         public string CurrentElement { get; set; }
+
         private Mode _mode = Mode.Alpha;
 
         public IList CurrentList
@@ -56,6 +59,7 @@ namespace ListTddPractice.UI
         public MainView()
         {
             InitializeComponent();
+
             //Init Filter Files
             openFileDialog1.Filter = @"(*.lst)|*.lst";
             saveFileDialog1.Filter = @"(*.lst)|*.lst";
@@ -74,16 +78,30 @@ namespace ListTddPractice.UI
             saveFileDialog1.FileOk += (sender, e) => SaveFile(saveFileDialog1.OpenFile());
 
             //Radio Button Changed
-            alphaRadioButton.CheckedChanged += (sender, e) => ModeChanged(CheckedChangedHelper(sender));
-            numericRadioButton.CheckedChanged += (sender, e) => ModeChanged(CheckedChangedHelper(sender));
+            alphaRadioButton.CheckedChanged += (sender, e) =>
+            {
+                var radioButton = sender as RadioButton;
+                if (radioButton.Checked)
+                {
+                    ModeChanged(CheckedChangedHelper(radioButton));
+                }
+            };
+            numericRadioButton.CheckedChanged += (sender, e) =>
+            {
+                var radioButton = sender as RadioButton;
+                if (radioButton.Checked)
+                {
+                    ModeChanged(CheckedChangedHelper(radioButton));
+                }
+            };
         }
 
-        public Mode CheckedChangedHelper(object sender)
+        public Mode CheckedChangedHelper(RadioButton radioButton)
         {
-            var radioButton = sender as RadioButton;
             if (CurrentList.Count != 0)
             {
                 saveFileDialog1.ShowDialog();
+                mainListBox.Items.Clear();
             }
             if (radioButton.Text == "Alpha")
             {
@@ -123,7 +141,7 @@ namespace ListTddPractice.UI
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
+        { 
             if (keyData == Keys.Enter)
             {
                 AddWithButtonClick(enterElemBox.Text);
@@ -138,6 +156,36 @@ namespace ListTddPractice.UI
         private void sortedAscRadioButton_CheckedChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void UseFilters(object sender, EventArgs e)
+        {
+            if (Mode == Mode.Alpha)
+            {
+                List<string> result;
+                var list = CurrentList.Cast<string>().Where(t => t.Contains(textBox1.Text));
+                if (sortedAscRadioButton.Checked)
+                {
+                    result = list.OrderBy(t => t).ToList();
+                }
+                else if (sortedDescRadioButton.Checked)
+                {
+                    result = list.OrderByDescending(t => t).ToList();
+                }
+                else
+                {
+                    result = list.ToList();
+                }
+                new FilterList(result);
+            }
+            if (Mode == Mode.Numeric)
+            {
+                List<int> result;
+                int num = int.Parse(textBox1.Text);
+                result = CurrentList.Cast<string>().Select(int.Parse).Where(t => t == num).ToList();
+                new FilterList(result);
+            }
+            new FilterList(new List<string>()).Show();
         }
     }
 }

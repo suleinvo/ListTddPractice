@@ -6,7 +6,6 @@ using System;
 using ListTddPractice.UI.Views;
 using ListTddPractice.UI.Models;
 using NSubstitute;
-using ListTddPractice.UI.Constants;
 using ListTddPractice.UI.Other;
 
 namespace ListTddPractice.Tests
@@ -34,38 +33,39 @@ namespace ListTddPractice.Tests
             _mainPresenter.Run();
             _view.Received().Show();
         }
-        
-        [TestCase(Mode.Alpha)]
-        public void Raise_WriteAndAddElemWithButtonWithMods_Succesfull(Mode mode)
+
+        [TestCase("abcd", Mode.Alpha)]
+        [TestCase("123", Mode.Numeric)]
+        public void Imitate_WriteAndAddElemIntoRepository_Succesfull(string elem, Mode mode)
         {
-            const string someElement = "aabbc";
-            _view.AddWithButtonClick += Raise.Event<Action<string>>(someElement);
+            _mainPresenter.SetModeForTest(mode);
+            _view.AddWithButtonClick += Raise.Event<Action<string>>(elem);
             _elemRepository.Received().Add(Arg.Any<string>());
+            //_view.CurrentList.Received().Add(Arg.Any<string>());
         }
 
         [Test]
-        public void Raise_DeleteElemButton_Succesfull()
+        public void Imitate_DeleteElemFromRepository_Succesfull()
         {
             const string expectedValue = "exp";
             _view.DeleteButtonClick += Raise.Event<Action<string>>(expectedValue);
             _elemRepository.Received().Delete(expectedValue);       
         }
 
+        [Test]
+        public void Imitate_ClearAfterChangeMode_Succesfull()
+        {
+            _view.ModeChanged += Raise.Event<Action<Mode>>(Mode.Alpha);
+            Assert.AreEqual(_view.CurrentList.Count, 0);
+        }
+
         [TestCase(null)]
         [TestCase("")]
-        public void Raise_DeleteElemButtonNotSelected_ThrowError(string notSelected)
+        public void Raise_DeleteElemButtonFromRepository_ThrowError(string notSelected)
         {
             _view.DeleteButtonClick += Raise.Event<Action<string>>(notSelected);
 
             _view.Received().ShowError(Arg.Is<string>(t => t.Contains("Element not selected")));  
-        }
-
-        [TestCase(Sorting.Asc)]
-        [TestCase(Sorting.Desc)]
-        public void Options_FilterAndAscendingGet_Succesfull(string sort)
-        {
-            _view.SortChanged += Raise.Event<Action<string>>(sort);
-            _elemRepository.Received().Get(sort);
         }
 
         [Test]

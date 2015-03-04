@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.mainListBox = new System.Windows.Forms.ListBox();
-            this.elemRepositoryBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.enterElemBox = new System.Windows.Forms.TextBox();
             this.addNewButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
@@ -40,6 +39,8 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.sortedDescRadioButton = new System.Windows.Forms.RadioButton();
             this.sortedAscRadioButton = new System.Windows.Forms.RadioButton();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -50,12 +51,13 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.clearButton = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.elemRepositoryBindingSource)).BeginInit();
+            this.elemRepositoryBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.panel2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.elemRepositoryBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // mainListBox
@@ -65,12 +67,8 @@
             this.mainListBox.Location = new System.Drawing.Point(316, 81);
             this.mainListBox.Margin = new System.Windows.Forms.Padding(4);
             this.mainListBox.Name = "mainListBox";
-            this.mainListBox.Size = new System.Drawing.Size(293, 164);
+            this.mainListBox.Size = new System.Drawing.Size(293, 212);
             this.mainListBox.TabIndex = 0;
-            // 
-            // elemRepositoryBindingSource
-            // 
-            this.elemRepositoryBindingSource.DataSource = typeof(ListTddPractice.UI.Models.ElemRepository);
             // 
             // enterElemBox
             // 
@@ -153,20 +151,39 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(268, 110);
+            this.groupBox2.Size = new System.Drawing.Size(279, 172);
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Sort";
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.button1);
+            this.panel2.Controls.Add(this.textBox1);
             this.panel2.Controls.Add(this.sortedDescRadioButton);
             this.panel2.Controls.Add(this.sortedAscRadioButton);
             this.panel2.Location = new System.Drawing.Point(8, 23);
             this.panel2.Margin = new System.Windows.Forms.Padding(4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(252, 64);
+            this.panel2.Size = new System.Drawing.Size(260, 114);
             this.panel2.TabIndex = 12;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(177, 73);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 22);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "Find";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.UseFilters);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(16, 73);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(141, 22);
+            this.textBox1.TabIndex = 2;
             // 
             // sortedDescRadioButton
             // 
@@ -254,11 +271,15 @@
             this.clearButton.Text = "Clear";
             this.clearButton.UseVisualStyleBackColor = true;
             // 
+            // elemRepositoryBindingSource
+            // 
+            this.elemRepositoryBindingSource.DataSource = typeof(ListTddPractice.UI.Models.ElemRepository);
+            // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(773, 265);
+            this.ClientSize = new System.Drawing.Size(773, 327);
             this.Controls.Add(this.clearButton);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -273,7 +294,6 @@
             this.Name = "MainView";
             this.Text = "List";
             this.Load += new System.EventHandler(this.MainView_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.elemRepositoryBindingSource)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -282,6 +302,7 @@
             this.panel2.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.elemRepositoryBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -310,6 +331,8 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.Button clearButton;
         private System.Windows.Forms.BindingSource elemRepositoryBindingSource;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 

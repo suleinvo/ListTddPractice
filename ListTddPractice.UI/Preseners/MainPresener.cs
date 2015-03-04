@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Drawing.Text;
 using System.IO;
-using System.Linq;
+using ListTddPractice.UI.Constants;
 using ListTddPractice.UI.Models;
 using ListTddPractice.UI.Other;
 using ListTddPractice.UI.Views;
@@ -13,8 +14,10 @@ namespace ListTddPractice.UI.Preseners
         private readonly IMainView _view;
         private IElemRepository _elemRepository;
         private readonly IFileService _fileService;
+
+        private IList _fileBuffer;
+
         private Mode _mode;
-        private string _sort = null;
 
         public MainPresenter(IMainView view, IElemRepository reposiory, IFileService fileService)
         {
@@ -23,11 +26,11 @@ namespace ListTddPractice.UI.Preseners
             _view = view;
             _view.AddWithButtonClick += AddToRepository;
             _view.DeleteButtonClick += DeleteFromRepository;
-            _view.SortChanged += UseSort;
+            _view.SortChanged += UseSearch;
             _view.OpenFile += OpenFile;
             _view.SaveFile += SaveFile;
             _view.Clear += Clear;
-            _view.ModeChanged += (t => { });
+            _view.ModeChanged += ModeChanged;
         }
 
         public void Run()
@@ -41,7 +44,7 @@ namespace ListTddPractice.UI.Preseners
             {
                 IsNullOrEmpty(elem);
                 _elemRepository.Add(RepositoryHelper.Validate(elem, _mode));
-                _view.CurrentList.Add(RepositoryHelper.Validate(elem, _mode));
+                LoadState();
             }
             catch (Exception ex)
             {
@@ -55,7 +58,7 @@ namespace ListTddPractice.UI.Preseners
             {
                 IsNullOrEmpty(elem);
                 _elemRepository.Delete(elem);
-                _view.CurrentList.Remove(elem);
+                LoadState();
             }
             catch (Exception ex)
             {
@@ -63,42 +66,62 @@ namespace ListTddPractice.UI.Preseners
             }
         }
 
-        public void UseSort(string sort)
+        public void UseSearch(string search)
         {
-            var list = _view.CurrentList.Cast<string>();
-            if (_view.Mode == Mode.Alpha)
-                _view.CurrentList.Cast<string>().Select(t=>int.Parse(t)).OrderBy(t => t);
+
         }
 
         public void OpenFile(Stream stream)
         {
-            _view.CurrentList = new ArrayList();
-            Mode fileMode;
-            var list = _fileService.ReadFile(stream, out fileMode);
-            _elemRepository = new ElemRepository(list);
-            _view.CurrentList = list;
-            _view.Mode = fileMode;
+            _fileBuffer = _fileService.ReadFile(stream, out _mode);
+            _view.Mode = _mode;
         }
 
         public void SaveFile(Stream stream)
-        { 
+        {
             _fileService.WriteFile(_view.CurrentList, stream);
         }
 
         public void Clear()
         {
-            _view.CurrentList.Clear();
             _elemRepository.Clear();
+            LoadState();
         }
 
         public void ModeChanged(Mode mode)
         {
-           
+            _mode = mode;
+            _elemRepository = new ElemRepository(GetData());
+            LoadState();
         }
 
         private void IsNullOrEmpty(string elem)
         {
             if (string.IsNullOrEmpty(elem)) throw new Exception("Element not selected");
         }
+
+        private void LoadState()
+        {
+            _view.Mode = _mode;
+            _view.CurrentList = _elemRepository.Get();
+        }
+
+        private IList GetData()
+        {
+            if (_fileBuffer != null)
+            {
+                var value = _fileBuffer;
+                _fileBuffer = null;
+                return value;
+            }
+            else return _view.CurrentList;
+        }
+
+#if DEBUG
+        public void SetModeForTest(Mode mode)
+        {
+            _mode = mode;
+        }
+#endif
     }
 }

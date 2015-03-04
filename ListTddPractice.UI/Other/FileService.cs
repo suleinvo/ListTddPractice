@@ -20,7 +20,7 @@ namespace ListTddPractice.UI.Other
                 {
                     mode = Mode.Numeric;
                 }
-                mode = Mode.Alpha;
+                else { mode = Mode.Alpha;}
                 return elements.ToList();
             }
 
